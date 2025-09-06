@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 from .models import Autor, Editorial, Libro, Miembro
 from .serializers import AutorSerializer, EditorialSerializer, LibroSerializer, MiembroSerializer
 

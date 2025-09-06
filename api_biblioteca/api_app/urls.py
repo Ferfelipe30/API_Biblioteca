@@ -24,16 +24,11 @@ urlpatterns = [
     path('libros/filtroAutor/<int:autor_id>/', LibroFiltro.as_view(), name='libro-filtro-1'),
     path('libros/filtroEditorial/<int:editorial_id>/', LibroFiltro.as_view(), name='libro-filtro-2'),
     path('libros/filtro/<int:autor_id>/<int:editorial_id>/', LibroFiltro.as_view(), name='libro-filtro-3'),
-
-    # rutas de miembros :
-
     path('miembros/', MiembroList.as_view(), name='miembro-list'),
     path('miembros/crear/', CrearMiembro.as_view(), name='miembro-crear'),
     path('miembros/<int:pk>/actualizar/', ActualizarMiembro.as_view(), name='miembro-actualizar'),
     path('miembros/<int:pk>/eliminar/', EliminarMiembro.as_view(), name='miembro-eliminar'),
     path('miembros/<int:miembro_id>/prestamos/', PrestamoList.as_view(), name='prestamos-por-miembro'),
-    # rutas de prestamos :
-    
     path('prestamos/', PrestamoList.as_view(), name='prestamo-list'),
     path('prestamos/crear/', CrearPrestamo.as_view(), name='prestamo-crear'),
     path('prestamos/<int:pk>/actualizar/', ActualizarPrestamo.as_view(), name='prestamo-actualizar'),
