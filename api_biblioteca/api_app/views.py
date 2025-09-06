@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import generics, status
 from rest_framework.response import Response
-from .models import Autor, Editorial, Libro
-from .serializers import AutorSerializer, EditorialSerializer, LibroSerializer
+from rest_framework.exceptions import NotFound
+from .models import Autor, Editorial, Libro, Miembro
+from .serializers import AutorSerializer, EditorialSerializer, LibroSerializer, MiembroSerializer
 
 class AutorList(generics.ListCreateAPIView):
     queryset = Autor.objects.all()
@@ -143,3 +144,48 @@ class LibroFiltro(generics.ListCreateAPIView):
         if not libros:
             return Response({'success': False, 'detail': 'No se encontraron libros con los filtros proporcionados.'}, status=status.HTTP_404_NOT_FOUND)
         return Response({'success': True, 'detail': 'Listado de libros filtrados.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+# miembros crud create, read, update, delete
+class MiembroList(generics.ListCreateAPIView):
+    queryset = Miembro.objects.all()
+    serializer_class = MiembroSerializer
+
+    def get(self, request):
+        miembros = self.get_queryset()
+        serializer = MiembroSerializer(miembros, many=True)
+        if not miembros:
+            raise NotFound("No se encontraron miembros.")
+        return Response({'success': True, 'detail': 'Listado de miembros.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+
+class CrearMiembro(generics.CreateAPIView):
+    queryset = Miembro.objects.all()
+    serializer_class = MiembroSerializer
+
+    def post(self, request):
+        serializer = MiembroSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'success': True, 'detail': 'Miembro creado correctamente.', 'data': serializer.data}, status=status.HTTP_201_CREATED)
+
+
+class ActualizarMiembro(generics.UpdateAPIView):
+    queryset = Miembro.objects.all()
+    serializer_class = MiembroSerializer
+
+    def put(self, request, pk):
+        miembro = get_object_or_404(Miembro, pk=pk)
+        serializer = MiembroSerializer(miembro, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'success': True, 'detail': 'Miembro actualizado correctamente.', 'data': serializer.data}, status=status.HTTP_200_OK)
+
+
+class EliminarMiembro(generics.DestroyAPIView):
+    queryset = Miembro.objects.all()
+    serializer_class = MiembroSerializer
+
+    def delete(self, request, pk):
+        miembro = get_object_or_404(Miembro, pk=pk)
+        miembro.delete()
+        return Response({'success': True, 'detail': 'Miembro eliminado correctamente.'}, status=status.HTTP_204_NO_CONTENT)
