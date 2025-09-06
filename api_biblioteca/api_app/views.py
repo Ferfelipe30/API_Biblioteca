@@ -188,3 +188,5 @@ class EliminarMiembro(generics.DestroyAPIView):
         miembro = get_object_or_404(Miembro, pk=pk)
         miembro.delete()
         return Response({'success': True, 'detail': 'Miembro eliminado correctamente.'}, status=status.HTTP_204_NO_CONTENT)
+# prestamos crud create, read, update, delete
+
