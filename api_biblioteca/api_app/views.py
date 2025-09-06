@@ -126,3 +126,20 @@ class EliminarLibro(generics.DestroyAPIView):
         libro = get_object_or_404(Libro, pk=pk)
         libro.delete()
         return Response({'success': True, 'detail': 'Libro eliminado correctamente.'}, status=status.HTTP_204_NO_CONTENT)
+    
+class LibroFiltro(generics.ListCreateAPIView):
+    queryset = Libro.objects.all()
+    serializer_class = LibroSerializer
+
+    def get(self, request, *args, **kwargs):
+        autor_id = kwargs.get('autor_id')
+        editorial_id = kwargs.get('editorial_id')
+        libros = self.get_queryset()
+        if autor_id:
+            libros = libros.filter(autor_id=autor_id)
+        if editorial_id:
+            libros = libros.filter(editorial_id=editorial_id)
+        serializer = LibroSerializer(libros, many=True)
+        if not libros:
+            return Response({'success': False, 'detail': 'No se encontraron libros con los filtros proporcionados.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'success': True, 'detail': 'Listado de libros filtrados.', 'data': serializer.data}, status=status.HTTP_200_OK)
