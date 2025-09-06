@@ -5,7 +5,7 @@ from .views import (
     LibroList, CrearLibro, ActualizarLibro, EliminarLibro, LibroFiltro,
     MiembroList, CrearMiembro, ActualizarMiembro, EliminarMiembro,
     PrestamoList, CrearPrestamo, ActualizarPrestamo, EliminarPrestamo,
-    
+
 )
 
 urlpatterns = [
@@ -33,6 +33,7 @@ urlpatterns = [
     path('miembros/<int:pk>/eliminar/', EliminarMiembro.as_view(), name='miembro-eliminar'),
     path('miembros/<int:miembro_id>/prestamos/', PrestamoList.as_view(), name='prestamos-por-miembro'),
     # rutas de prestamos :
+    
     path('prestamos/', PrestamoList.as_view(), name='prestamo-list'),
     path('prestamos/crear/', CrearPrestamo.as_view(), name='prestamo-crear'),
     path('prestamos/<int:pk>/actualizar/', ActualizarPrestamo.as_view(), name='prestamo-actualizar'),
