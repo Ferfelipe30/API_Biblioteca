@@ -4,6 +4,8 @@ from .views import (
     EditorialList, CrearEditorial, ActualizarEditorial, EliminarEditorial,
     LibroList, CrearLibro, ActualizarLibro, EliminarLibro, LibroFiltro,
     MiembroList, CrearMiembro, ActualizarMiembro, EliminarMiembro,
+    PrestamoList, CrearPrestamo, ActualizarPrestamo, EliminarPrestamo,
+    
 )
 
 urlpatterns = [
@@ -29,4 +31,11 @@ urlpatterns = [
     path('miembros/crear/', CrearMiembro.as_view(), name='miembro-crear'),
     path('miembros/<int:pk>/actualizar/', ActualizarMiembro.as_view(), name='miembro-actualizar'),
     path('miembros/<int:pk>/eliminar/', EliminarMiembro.as_view(), name='miembro-eliminar'),
+    path('miembros/<int:miembro_id>/prestamos/', PrestamoList.as_view(), name='prestamos-por-miembro'),
+    # rutas de prestamos :
+    path('prestamos/', PrestamoList.as_view(), name='prestamo-list'),
+    path('prestamos/crear/', CrearPrestamo.as_view(), name='prestamo-crear'),
+    path('prestamos/<int:pk>/actualizar/', ActualizarPrestamo.as_view(), name='prestamo-actualizar'),
+    path('prestamos/<int:pk>/eliminar/', EliminarPrestamo.as_view(), name='prestamo-eliminar'),
+    path('libros/<int:libro_id>/prestamos/', PrestamoList.as_view(), name='prestamos-por-libro'),
 ]
