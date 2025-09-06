@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import (
     AutorList, CrearAutor, ActualizarAutor, EliminarAutor,
-    EditorialList, CrearEditorial, ActualizarEditorial, EliminarEditorial
+    EditorialList, CrearEditorial, ActualizarEditorial, EliminarEditorial,
+    LibroList, CrearLibro, ActualizarLibro, EliminarLibro
 )
 
 urlpatterns = [
@@ -13,4 +14,8 @@ urlpatterns = [
     path('editoriales/crear/', CrearEditorial.as_view(), name='editorial-crear'),
     path('editoriales/<int:pk>/actualizar/', ActualizarEditorial.as_view(), name='editorial-actualizar'),
     path('editoriales/<int:pk>/eliminar/', EliminarEditorial.as_view(), name='editorial-eliminar'),
+    path('libros/', LibroList.as_view(), name='libro-list'),
+    path('libros/crear/', CrearLibro.as_view(), name='libro-crear'),
+    path('libros/<int:pk>/actualizar/', ActualizarLibro.as_view(), name='libro-actualizar'),
+    path('libros/<int:pk>/eliminar/', EliminarLibro.as_view(), name='libro-eliminar'),
 ]
