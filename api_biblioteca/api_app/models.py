@@ -1,4 +1,5 @@
 from django.db import models
+<<<<<<< HEAD
 
 class Autor(models.Model):
     id_autor = models.AutoField(primary_key=True, editable=False, db_column='id_autor')
@@ -13,3 +14,5 @@ class Autor(models.Model):
         db_table = 'autor'
         verbose_name = 'Autor'
         verbose_name_plural = 'Autores'
+=======
+>>>>>>> f6c93994b1d13d2c2165e7d5c6939faa117b49e4
