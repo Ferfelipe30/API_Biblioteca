@@ -189,3 +189,76 @@ class EliminarMiembro(generics.DestroyAPIView):
         miembro = get_object_or_404(Miembro, pk=pk)
         miembro.delete()
         return Response({'success': True, 'detail': 'Miembro eliminado correctamente.'}, status=status.HTTP_204_NO_CONTENT)
+# prestamos crud create, read, update, delete
+
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
+from django.shortcuts import get_object_or_404
+from .models import Prestamo
+from .serializers import PrestamoSerializer
+
+class PrestamoList(generics.ListCreateAPIView):
+    queryset = Prestamo.objects.all()
+    serializer_class = PrestamoSerializer
+
+    def get(self, request, miembro_id=None, libro_id=None):
+        # Si la URL tiene miembro_id, filtramos por miembro
+        if miembro_id:
+            prestamos = Prestamo.objects.filter(miembro_id=miembro_id)
+        # Si la URL tiene libro_id, filtramos por libro
+        elif libro_id:
+            prestamos = Prestamo.objects.filter(libro_id=libro_id)
+        else:
+            prestamos = self.get_queryset()
+
+        if not prestamos.exists():
+            raise NotFound("No se encontraron préstamos.")
+
+        serializer = PrestamoSerializer(prestamos, many=True)
+        return Response(
+            {'success': True, 'detail': 'Listado de préstamos.', 'data': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+
+class CrearPrestamo(generics.CreateAPIView):
+    queryset = Prestamo.objects.all()
+    serializer_class = PrestamoSerializer
+
+    def post(self, request):
+        serializer = PrestamoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {'success': True, 'detail': 'Préstamo creado correctamente.', 'data': serializer.data},
+            status=status.HTTP_201_CREATED
+        )
+
+
+class ActualizarPrestamo(generics.UpdateAPIView):
+    queryset = Prestamo.objects.all()
+    serializer_class = PrestamoSerializer
+
+    def put(self, request, pk):
+        prestamo = get_object_or_404(Prestamo, pk=pk)
+        serializer = PrestamoSerializer(prestamo, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {'success': True, 'detail': 'Préstamo actualizado correctamente.', 'data': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+
+class EliminarPrestamo(generics.DestroyAPIView):
+    queryset = Prestamo.objects.all()
+    serializer_class = PrestamoSerializer
+
+    def delete(self, request, pk):
+        prestamo = get_object_or_404(Prestamo, pk=pk)
+        prestamo.delete()
+        return Response(
+            {'success': True, 'detail': 'Préstamo eliminado correctamente.'},
+            status=status.HTTP_204_NO_CONTENT
+        )

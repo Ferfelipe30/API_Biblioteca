@@ -60,3 +60,21 @@ class Miembro(models.Model):
         db_table = 'miembro'
         verbose_name = 'Miembro'
         verbose_name_plural = 'Miembros'
+
+# prestamos modelos 
+
+class Prestamo(models.Model):
+    id_prestamo = models.AutoField(primary_key=True, editable=False, db_column='id_prestamo')
+    fecha_prestam = models.DateField(db_column='fecha_prestam')
+    fecha_devolucion = models.DateField(null=True, blank=True, db_column='fecha_devolucion')
+    # Relaciones
+    libro = models.ForeignKey('Libro',on_delete=models.CASCADE,db_column='id_libro')
+    miembro = models.ForeignKey(Miembro,on_delete=models.CASCADE,db_column='id_miembro')
+
+    def __str__(self):
+        return f"Préstamo {self.id_prestamo} - {self.miembro}"
+
+    class Meta:
+        db_table = 'prestamo'
+        verbose_name = 'Préstamo'
+        verbose_name_plural = 'Préstamos'
